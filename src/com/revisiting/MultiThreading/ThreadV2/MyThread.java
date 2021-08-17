@@ -34,4 +34,8 @@ public class MyThread implements Runnable{
         }
         System.out.println(this.thrName + " terminating...");
     }
+
+    public Thread getThr() {
+        return thr;
+    }
 }
