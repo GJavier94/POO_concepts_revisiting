@@ -3,16 +3,14 @@ package com.revisiting.MultiThreading.Synchronization;
 public class SumArray {
 
     private int sum;
-    SumArray(){
 
-    }
     /*
     Because threads are running concurrently  the might try to access a resource at the same time
     provoking undesirable or unexpected results
     Every object in java can hold a lock by using sth monitor
     by applying the keyword 'synchronized' to a method's object the thread which executes the methods locked the object
-    so that no other thread can access synchronized methods, the will be put in  a wait state so that
-    the execution wil be sequential
+    so that no other thread can access syncronzed methods, the will be put in  a wait state so that
+    the execution wil be secuencial
 
     * */
 

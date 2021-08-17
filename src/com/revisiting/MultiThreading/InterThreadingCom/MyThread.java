@@ -1,26 +1,21 @@
 package com.revisiting.MultiThreading.InterThreadingCom;
 
-import com.revisiting.MultiThreading.Synchronization.SumArray;
-
 public class MyThread implements Runnable{
 
-    // creating a reference of this class
+
     private Thread thr;
-    static int[] a ;
-    static SumArray sumArray = new SumArray();
-
-    MyThread(String name, int[] nums){
-
+    private TickTock tc;
+    MyThread(String name){
         this.thr = new Thread(this,name);
-        a = nums;
     }
-    /*
-    Using a factory method to create and start a Thread object
-    so that it's easier when creating multiple objects of this class
 
-    * */
-    public static MyThread createAndStart(String name, int[] nums){
-        MyThread myThrd = new MyThread(name, nums );
+    public void setTc(TickTock tc) {
+        this.tc = tc;
+    }
+
+    public static MyThread createAndStart(String name, TickTock  tc ){
+        MyThread myThrd = new MyThread(name);
+        myThrd.setTc(tc);
         myThrd.thr.start();
         return myThrd;
 
@@ -28,26 +23,23 @@ public class MyThread implements Runnable{
     @Override
     public void run() {
         System.out.println(Thread.currentThread() + " is starting..." );
-
-        /*
-        If there's no access to the class implementation which we want to call in a synchronized way
-        it's possible to make the object call synchronizable
-        by using
-        synchronyzed(objRef){
-            //statements to be synchronized
+        if(getThr().getName().compareTo("Tick") == 0){
+            for(int i = 0 ; i < 5 ; i ++){
+                this.tc.Tick(true);
+            }
+            this.tc.Tick(false);
         }
-         */
-        //int sum = sumArray.sumArray(MyThread.getA());
-        synchronized (sumArray){
-            int sum = sumArray.sumArray(a);
+        else{
+            for(int i = 0 ; i < 5 ; i ++){
+                this.tc.Tock(true);
+            }
+            this.tc.Tock(false);
         }
 
         System.out.println(this.thr.getName() + " terminating...");
     }
 
-    public static int[] getA() {
-        return a;
-    }
+
 
     public Thread getThr() {
         return thr;
