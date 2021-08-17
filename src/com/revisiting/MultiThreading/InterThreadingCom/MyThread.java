@@ -1,4 +1,6 @@
-package com.revisiting.MultiThreading.Synchronization;
+package com.revisiting.MultiThreading.InterThreadingCom;
+
+import com.revisiting.MultiThreading.Synchronization.SumArray;
 
 public class MyThread implements Runnable{
 
