@@ -8,6 +8,7 @@ class CoroutinesConcurrencyPrinciple {
     companion object{
         @JvmStatic fun main(args: Array<String>) {
             runBlocking {
+                val topCoroutineScope = this
                 //This is a parent coroutine
                 println(this.hashCode())
                 //runBlocking defines a CoroutineScope object which defines an scope for coroutines
@@ -62,10 +63,25 @@ class CoroutinesConcurrencyPrinciple {
                  * launche method returns a Job object instances which we can use to
                  * to make this scope with for the completion of the coroutine
                  */
+
                 job.join() // suspends the parent coroutine for the completion of the other coroutine
                 println("The job has finished")
 
+                //Also, coroutines are light-weight
+                /**
+                 * DOING THIS WITH THREADS COULD BE IMPOSSIBLE
+                 * IT WOULD RUN OUT OF MEMORY OR STH...
+                 */
+                repeat(100_000){
+                    topCoroutineScope.launch {
+                        delay(5000L)
+                        print(".")
+                    }
+                }
+
             }
+
+
             println("Hello i was the last line executed") //this the last line executed because the thread is blocke by the runBlocking scope
         }
 
