@@ -68,22 +68,33 @@ class CoroutinesConcurrencyPrinciple {
                 println("The job has finished")
 
                 //Also, coroutines are light-weight
-                /**
-                 * DOING THIS WITH THREADS COULD BE IMPOSSIBLE
-                 * IT WOULD RUN OUT OF MEMORY OR STH...
-                 */
-                repeat(100_000){
-                    topCoroutineScope.launch {
-                        delay(5000L)
-                        print(".")
-                    }
-                }
 
+                val heavyJob = launch {
+                    /**
+                     * DOING THIS WITH THREADS COULD BE IMPOSSIBLE
+                     * IT WOULD RUN OUT OF MEMORY OR STH...
+                     */
+                    var lastSmallJob:Job? = null
+                    repeat(100_000){
+                        lastSmallJob = topCoroutineScope.launch {
+                            delay(5000L)
+                            print(".")
+                        }
+
+                    }
+                    lastSmallJob?.join()
+
+                }
+                heavyJob.join()
+                checkCoroutineBehaviour()
             }
+
+
 
 
             println("Hello i was the last line executed") //this the last line executed because the thread is blocke by the runBlocking scope
         }
+
 
         //another builder for scopes for coroutines is -> coroutineScope
         private suspend fun doWork(coroutineContext: CoroutineContext) = coroutineScope{
@@ -98,6 +109,19 @@ class CoroutinesConcurrencyPrinciple {
                 }
             }
         }
+
+        private suspend fun checkCoroutineBehaviour() {
+            coroutineScope {
+                launch {
+                    println("launch") // this is the second to be executed
+                }
+                println("coroutineScope") // this is the first to be executed
+            }
+            println("checkCoroutineBehaviour") // this is the last one to be executed
+        }
     }
+
+
+
 
 }
