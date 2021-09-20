@@ -21,7 +21,7 @@ class CoroutineHierarchyOverride {
 
             runBlocking {
                 log("Im the  grand parent...")
-                launch {
+                val job1 = launch {
                     log("Im the parent...")
                     val parentJob = this.coroutineContext.job
                     val childJob = launch {
@@ -54,7 +54,25 @@ class CoroutineHierarchyOverride {
                     childJob.cancel()
                     childJob.join()
                     log("I cancel them and it seems there are some coroutines are not mine so maybe more code is coming")
+
+
                 }
+                job1.join()
+                /**
+                 * There exists parental responsibilities
+                 * parent Coroutine waits for its children to finish itself
+                 */
+
+                launch {
+                    repeat(3){
+                        launch {
+                            log("Hi im child $it")
+                            delay(1300L)
+                            log("Child $it now i will die") // this line will be printed
+                        }
+                    }
+                }
+
 
             }
 
