@@ -25,31 +25,15 @@ class CoroutineHierarchyOverride {
                     log("Im the parent...")
                     val parentJob = this.coroutineContext.job
                     val childJob = launch {
-                        launch {
-                            try{
-                                log("Im child 1 ")
-                                delay(3000L)
-                                log("comming back from sleep child 1 ")
-                            }catch (e:CancellationException){
-                                log("Someone cancelled me...")
-                            }
-                        }
-                        launch {
-                            try{
-                                log("Im child 2 ")
-                                delay(3000L)
-                                log("comming back from sleep child 2 ")
-                            }catch (e:CancellationException){
-                                log("Someone cancelled me...")
-                            }
-                        }
-                        launch {
-                            try{
-                                log("Im child 3 ")
-                                delay(3000L)
-                                log("comming back from sleep child 3 ")
-                            }catch (e:CancellationException){
-                                log("Someone cancelled me...")
+                        repeat(3){
+                            launch {
+                                try{
+                                    log("Im child $it ")
+                                    delay(3000L)
+                                    log("comming back from sleep child $it ")
+                                }catch (e:CancellationException){
+                                    log("Someone cancelled me...")
+                                }
                             }
                         }
 
