@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.flow
 
-class CoroutineFlows {
+class CoroutineFlowsPart1 {
     companion object{
         @JvmStatic fun main(args:Array<String>){
             //let's define a runBlocking Scope which defines a scope block the main thread and creates a coroutine
