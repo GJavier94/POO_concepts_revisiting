@@ -1,5 +1,6 @@
 package main.kotlin
 import kotlinx.coroutines.*
+import kotlin.concurrent.thread
 
 /**
  * Coroutine Debugging can be made in two ways
@@ -41,6 +42,25 @@ class CoroutineDebug {
                  * [main @coroutine#1] <----now Im running
                  * [Ctx1 @coroutine#4] <--This is sequential it will run in third place
                  */
+
+                /**
+                 * WE CAN NAME COROUTINES by using CoroutineName(<name>) object
+                 */
+                job3.join()
+                // to define multiple elements for the context coroutine use +
+
+                val result = async( Dispatchers.Default + CoroutineName("coroutineFibonacci")) {
+                    var a1 = 1
+                    var a2 = 1
+                    repeat(10){
+                        var aux = a2
+                        a2 = a1 + a2
+                        a1 = aux
+                    }
+                    log("The result is: $a2")
+                    a2
+                }
+                log("result received is ${result.await()}")
 
             }
 
